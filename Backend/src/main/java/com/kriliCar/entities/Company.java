@@ -1,8 +1,8 @@
 package com.kriliCar.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.kriliCar.enums.City;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -12,4 +12,15 @@ import lombok.experimental.SuperBuilder;
 @Getter @Setter @NoArgsConstructor
 @SuperBuilder
 public class Company extends AppUser {
+
+    private String landline; // Téléphone fixe
+
+    @Enumerated(EnumType.STRING)
+    private City city;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Builder.Default
+    private Boolean isBooster = false;
 }

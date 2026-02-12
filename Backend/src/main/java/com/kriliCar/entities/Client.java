@@ -10,7 +10,8 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "clients")
 // @PrimaryKeyJoinColumn(name = "client_id")
-@Getter @Setter @NoArgsConstructor
+@Data
+@NoArgsConstructor
 @SuperBuilder
 public class Client extends AppUser {
 }

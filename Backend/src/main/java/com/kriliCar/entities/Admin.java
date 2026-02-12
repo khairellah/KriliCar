@@ -8,7 +8,8 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "admins")
-@Getter @Setter @NoArgsConstructor
+@Data
+@NoArgsConstructor
 @SuperBuilder
 public class Admin extends AppUser {
     // On pourra ajouter des champs spécifiques à l'Admin ici

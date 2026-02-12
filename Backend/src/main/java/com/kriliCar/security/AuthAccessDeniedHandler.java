@@ -3,6 +3,7 @@ package com.kriliCar.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kriliCar.dtos.responses.ErrorResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -12,31 +13,38 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-// cette classe pour : 403 Forbidden
-// Ceci gère l'erreur AccessDeniedException (quand un Client tente d'accéder à une route Admin).
+/**
+ * Cette classe gère les erreurs 403 Forbidden.
+ * Elle intervient lorsqu'un utilisateur est authentifié mais n'a pas
+ * les privilèges suffisants (rôle) pour accéder à une ressource.
+ */
+
 @Component
+@RequiredArgsConstructor
 public class AuthAccessDeniedHandler implements AccessDeniedHandler {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    // On injecte l'ObjectMapper configuré par Spring (supporte LocalDateTime)
+    private final ObjectMapper objectMapper;
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
 
-        // Loggez l'erreur pour le serveur
-        // logger.error("Access denied error: {}", accessDeniedException.getMessage());
+        // 1. Définition du statut 403
+        HttpStatus status = HttpStatus.FORBIDDEN;
 
-        // Construit votre DTO de réponse 403
-        HttpStatus status = HttpStatus.FORBIDDEN; // 403
-        ErrorResponse errorResponse = new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                "Accès refusé. Vous n'avez pas les permissions (rôle) nécessaires pour cette ressource.",
-                request.getRequestURI()
-        );
+        // 2. Construction de la réponse via le Builder de ton DTO
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .message("Accès refusé. Vous n'avez pas les permissions (rôle) nécessaires pour cette ressource.")
+                .path(request.getRequestURI())
+                .build();
 
+        // 3. Configuration de la réponse HTTP
         response.setStatus(status.value());
         response.setContentType("application/json");
-        response.getOutputStream().println(objectMapper.writeValueAsString(errorResponse));
+        // 4. Écriture du JSON dans le corps de la réponse
+        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 }

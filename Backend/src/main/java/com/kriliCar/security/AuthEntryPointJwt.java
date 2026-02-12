@@ -29,26 +29,22 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
 
-        // Loggez l'erreur pour le serveur
-        // logger.error("Unauthorized error: {}", authException.getMessage());
 
-        // Construit votre DTO de réponse 401
         HttpStatus status = HttpStatus.UNAUTHORIZED; // 401
 
-        // Comme l'erreur de sérialisation s'est produite ici, nous allons construire
-        // une réponse manuelle simple pour s'assurer que l'erreur est capturée.
-        ErrorResponse errorResponse = new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                "Accès refusé. Un jeton d'authentification valide est requis (401).",
-                request.getRequestURI()
-        );
+        // 🚀 Utilisation du Builder pour correspondre à ton nouveau DTO
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .message("Accès refusé. Un jeton d'authentification valide est requis (401).")
+                .path(request.getRequestURI())
+                // Le timestamp sera généré automatiquement par @Builder.Default dans le DTO
+                .build();
 
         response.setStatus(status.value());
         response.setContentType("application/json");
 
-        // 3. Utilisation de l'ObjectMapper injecté
-        // C'est cette ligne qui causait l'erreur "Java 8 date/time type not supported"
+        // L'ObjectMapper injecté gérera parfaitement le LocalDateTime grâce aux dépendances de Spring Boot 3
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 }
