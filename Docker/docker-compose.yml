@@ -1,7 +1,7 @@
 services:
   mysql-db:
     image: mysql:8.0
-    container_name: krilicar-mysql
+    container_name: krilicar_mysql
     ports:
       - "3306:3306"
     environment:
