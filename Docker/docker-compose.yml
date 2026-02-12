@@ -1,0 +1,17 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: krilicar-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: krilicar_db
+    volumes:
+      # On lie le dossier local ./mysql_data au dossier interne de MySQL
+      # - ./mysql_data:/var/lib/mysql
+      # Mettre la base dans C:\mysql_krilicar
+      - C:/mysql_krilicar:/var/lib/mysql
+    restart: always
+
+# Tu peux supprimer la section 'volumes:' tout en bas car elle n'est plus nécessaire
