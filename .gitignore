@@ -1,0 +1,29 @@
+# IDEs et Editeurs
+.idea/
+.vscode/
+*.swp
+*.iml
+
+# Java - Backend (Maven) - On cible le sous-dossier Backend
+Backend/target/
+Backend/*.class
+Backend/.mvn/
+Backend/mvnw
+Backend/mvnw.cmd
+
+# Frontend (Angular) - On cible le sous-dossier Frontend
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.angular/
+Frontend/.npm/
+
+# Docker & Base de données
+# On ignore les données locales de MySQL pour ne pas alourdir Git
+# TRÈS IMPORTANT : On ne push jamais les données réelles de la DB sur Git
+**/mysql_data/
+Docker/mysql_data/
+
+# Logs et Système
+*.log
+.DS_Store
+Thumbs.db
