@@ -11,3 +11,5 @@ Projet Fullstack basé sur **Spring Boot 3** et **Angular**.
 - Structure de dossiers Monorepo.
 - Configuration du socle Backend avec dépendances JPA, Security et Web.
 - Mise en place de MapStruct et Lombok.
+=======
+# KriliCar
