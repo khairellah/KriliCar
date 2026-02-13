@@ -74,6 +74,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/models/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/cars/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/brands/**").permitAll()
                         // TOUTES les autres routes nécessitent un token
                         // C'est cela qui fera fonctionner ton test 5 (401)
                         .anyRequest().authenticated()
