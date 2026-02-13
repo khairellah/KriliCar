@@ -13,6 +13,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Company extends AppUser {
 
+    @Column(name = "company_name")
+    private String companyName;
+
     private String landline; // Téléphone fixe
 
     @Enumerated(EnumType.STRING)
