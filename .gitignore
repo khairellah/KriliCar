@@ -10,6 +10,7 @@ Backend/*.class
 Backend/.mvn/
 Backend/mvnw
 Backend/mvnw.cmd
+Backend/uploads
 
 # Frontend (Angular) - On cible le sous-dossier Frontend
 Frontend/node_modules/
