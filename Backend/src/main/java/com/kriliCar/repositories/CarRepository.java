@@ -31,11 +31,21 @@ public interface CarRepository extends JpaRepository<Car, Long> {
             "(:brand IS NULL OR :brand = '' OR LOWER(c.brand.name) LIKE LOWER(CONCAT('%', :brand, '%'))) AND " +
             "(:model IS NULL OR :model = '' OR LOWER(c.model.name) LIKE LOWER(CONCAT('%', :model, '%'))) AND " +
             "(:city IS NULL OR c.company.city = :city) AND " +
+            "(:minPrice IS NULL OR c.price >= :minPrice) AND " +
+            "(:maxPrice IS NULL OR c.price <= :maxPrice) AND " +
+            "(:minMileage IS NULL OR c.mileage >= :minMileage) AND " +
+            "(:maxMileage IS NULL OR c.mileage <= :maxMileage) AND " +
+            "(:nbrSeats IS NULL OR c.nbrSeats = :nbrSeats) AND " +
             "c.availability = :status")
-    Page<Car> searchSimple(
+    Page<Car> searchCars(
             @Param("brand") String brand,
             @Param("model") String model,
             @Param("city") City city,
+            @Param("minPrice") Double minPrice,
+            @Param("maxPrice") Double maxPrice,
+            @Param("minMileage") Integer minMileage,
+            @Param("maxMileage") Integer maxMileage,
+            @Param("nbrSeats") Integer nbrSeats,
             @Param("status") CarAvailability status,
             Pageable pageable
     );

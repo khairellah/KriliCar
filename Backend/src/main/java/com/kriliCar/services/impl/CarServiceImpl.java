@@ -182,27 +182,29 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CarDTO> searchSimple(String brand, String model, String city, Pageable pageable) throws BadRequestException {
+    public Page<CarDTO> searchCars(String brand, String model, String city,
+                                   Double minPrice, Double maxPrice,
+                                   Integer minMileage, Integer maxMileage,
+                                   Integer nbrSeats, Pageable pageable) throws BadRequestException {
         try {
             com.kriliCar.enums.City cityEnum = null;
             if (city != null && !city.trim().isEmpty()) {
                 cityEnum = com.kriliCar.enums.City.valueOf(city.toUpperCase());
             }
 
-            // On appelle la nouvelle méthode searchSimple
-            return carRepository.searchSimple(
-                    brand,
-                    model,
-                    cityEnum,
+            return carRepository.searchCars(
+                    brand, model, cityEnum,
+                    minPrice, maxPrice,
+                    minMileage, maxMileage,
+                    nbrSeats,
                     CarAvailability.AVAILABLE,
                     pageable
             ).map(carMapper::toDTO);
 
         } catch (IllegalArgumentException e) {
-            log.warn("Tentative de recherche avec une ville invalide : {}", city);
             throw new BadRequestException("La ville spécifiée '" + city + "' n'est pas valide.");
         } catch (Exception e) {
-            log.error("ERREUR CRITIQUE DANS SEARCH_SIMPLE : ", e);
+            log.error("ERREUR DANS LA RECHERCHE AVANCÉE : ", e);
             throw e;
         }
     }

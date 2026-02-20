@@ -20,6 +20,11 @@ public interface CarService {
     Page<CarDTO> getAllCars(Long companyId, Pageable pageable);
     boolean isCarOwnedByCompany(Long carId, String email);
 
-    // Recherche simple
-    Page<CarDTO> searchSimple(String brand, String model, String city, Pageable pageable) throws BadRequestException;
+    // Recherche Simple / Avancé
+    Page<CarDTO> searchCars(
+            String brand, String model, String city,
+            Double minPrice, Double maxPrice,
+            Integer minMileage, Integer maxMileage,
+            Integer nbrSeats, Pageable pageable
+    ) throws BadRequestException;
 }

@@ -62,13 +62,19 @@ public class CarController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/search/simple")
-    public ResponseEntity<Page<CarDTO>> searchSimple(
+    @GetMapping("/search")
+    public ResponseEntity<Page<CarDTO>> searchCars(
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String model,
             @RequestParam(required = false) String city,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Integer minMileage,
+            @RequestParam(required = false) Integer maxMileage,
+            @RequestParam(required = false) Integer nbrSeats,
             Pageable pageable) throws BadRequestException {
-        return ResponseEntity.ok(carService.searchSimple(brand, model, city, pageable));
+        return ResponseEntity.ok(carService.searchCars(
+                brand, model, city, minPrice, maxPrice, minMileage, maxMileage, nbrSeats, pageable));
     }
 
 }
