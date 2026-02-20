@@ -1,6 +1,7 @@
 package com.kriliCar.services.interfaces;
 
 import com.kriliCar.dtos.CarDTO;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -18,4 +19,7 @@ public interface CarService {
     CarDTO getCarByCode(String code);
     Page<CarDTO> getAllCars(Long companyId, Pageable pageable);
     boolean isCarOwnedByCompany(Long carId, String email);
+
+    // Recherche simple
+    Page<CarDTO> searchSimple(String brand, String model, String city, Pageable pageable) throws BadRequestException;
 }

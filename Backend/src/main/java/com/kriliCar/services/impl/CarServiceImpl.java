@@ -12,6 +12,7 @@ import com.kriliCar.services.interfaces.CarService;
 import com.kriliCar.services.interfaces.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -177,5 +178,32 @@ public class CarServiceImpl implements CarService {
                 .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", carId));
 
         return car.getCompany().getId().equals(company.getId());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CarDTO> searchSimple(String brand, String model, String city, Pageable pageable) throws BadRequestException {
+        try {
+            com.kriliCar.enums.City cityEnum = null;
+            if (city != null && !city.trim().isEmpty()) {
+                cityEnum = com.kriliCar.enums.City.valueOf(city.toUpperCase());
+            }
+
+            // On appelle la nouvelle méthode searchSimple
+            return carRepository.searchSimple(
+                    brand,
+                    model,
+                    cityEnum,
+                    CarAvailability.AVAILABLE,
+                    pageable
+            ).map(carMapper::toDTO);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("Tentative de recherche avec une ville invalide : {}", city);
+            throw new BadRequestException("La ville spécifiée '" + city + "' n'est pas valide.");
+        } catch (Exception e) {
+            log.error("ERREUR CRITIQUE DANS SEARCH_SIMPLE : ", e);
+            throw e;
+        }
     }
 }

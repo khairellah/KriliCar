@@ -3,6 +3,7 @@ package com.kriliCar.controllers;
 import com.kriliCar.dtos.CarDTO;
 import com.kriliCar.services.interfaces.CarService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -60,4 +61,14 @@ public class CarController {
         carService.deleteCar(code, authentication);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/search/simple")
+    public ResponseEntity<Page<CarDTO>> searchSimple(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String model,
+            @RequestParam(required = false) String city,
+            Pageable pageable) throws BadRequestException {
+        return ResponseEntity.ok(carService.searchSimple(brand, model, city, pageable));
+    }
+
 }
